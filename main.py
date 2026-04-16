@@ -2,7 +2,8 @@ from fastapi import FastAPI,Depends
 from typing import Annotated
 from contextlib import asynccontextmanager
 from database import create_db_and_tables,get_session
-from sqlmodel import Session, text
+from sqlmodel import Session
+from routes.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,6 +14,4 @@ app= FastAPI(lifespan=lifespan)
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(auth_router)

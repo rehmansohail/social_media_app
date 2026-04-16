@@ -1,4 +1,8 @@
 from sqlmodel import SQLModel, create_engine, Session
+from models.follow import Follow
+from models.like import Like
+from models.post import Post
+from models.user import User
 
 
 database_url = "sqlite:///./test.db"
