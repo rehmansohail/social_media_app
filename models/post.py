@@ -2,12 +2,18 @@ from sqlmodel import SQLModel, Field
 from datetime import datetime
 
 class PostInput(SQLModel):
-    user_id: int
     title: str
     description: str
 
+class PostOutput(PostInput):
+    post_id:int
+    created_at:datetime
+    posted_by: str
+
 class Post(PostInput, table=True):
+    user_id: int=Field(default=None)
     post_id: int=Field(default=None,primary_key=True)
     created_at: datetime
+
 
 

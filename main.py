@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from database import create_db_and_tables,get_session
 from sqlmodel import Session
 from routes.auth import router as auth_router
+from routes.posts import router as post_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -15,3 +16,4 @@ app= FastAPI(lifespan=lifespan)
 SessionDep = Annotated[Session, Depends(get_session)]
 
 app.include_router(auth_router)
+app.include_router(post_router)
