@@ -37,3 +37,29 @@ def read_post(post_id: int, session: SessionDep):
         posted_by=session.exec(select(User).where(User.user_id==post.user_id)).first().user_name
     )
     return output_post
+
+
+@router.delete("/posts/{post_id}")
+def delete_todo(post_id: int, session: SessionDep,current_user: User = Depends(get_current_user)):
+    post = session.exec(select(Post).where(post_id==Post.post_id, Post.user_id==current_user.user_id)).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    session.delete(post)
+    session.commit()
+    return {"message": "Deleted Successfully"}
+
+@router.patch("/posts/{post_id}", response_model=PostOutput)
+def update_todo(post_id: int, post: PostInput, session: SessionDep,current_user: User= Depends(get_current_user)):
+    post_db = session.exec(select(Post).where(post_id==Post.post_id, Post.user_id==current_user.user_id)).first()
+    if not post_db:
+        raise HTTPException(status_code=404, detail="Post not found")
+    post_data = post.model_dump(exclude_unset=True)
+    post_db.sqlmodel_update(post_data)
+    session.add(post_db)
+    session.commit()
+    session.refresh(post_db)
+    output_post=PostOutput(
+        **post_db.model_dump(),
+        posted_by=session.exec(select(User).where(User.user_id==post_db.user_id)).first().user_name
+    )
+    return output_post
