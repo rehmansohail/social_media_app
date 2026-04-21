@@ -6,6 +6,8 @@ from sqlmodel import Session
 from routes.auth import router as auth_router
 from routes.posts import router as post_router
 from routes.likes import router as like_router
+from routes.follows import router as follow_router
+from routes.users import router as user_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,3 +21,5 @@ SessionDep = Annotated[Session, Depends(get_session)]
 app.include_router(auth_router)
 app.include_router(post_router)
 app.include_router(like_router)
+app.include_router(follow_router)
+app.include_router(user_router)
