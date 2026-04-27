@@ -1,11 +1,9 @@
 from sqlmodel import SQLModel, create_engine, Session
-from models.follow import Follow
-from models.like import Like
-from models.post import Post
-from models.user import User
+import os
+from dotenv import load_dotenv
 
-
-database_url = "sqlite:///./test.db"
+load_dotenv()
+database_url = os.getenv("DATABASE_URL")
 
 engine = create_engine(database_url)
 

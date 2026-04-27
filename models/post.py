@@ -15,5 +15,8 @@ class Post(PostInput, table=True):
     post_id: int=Field(default=None,primary_key=True)
     created_at: datetime
 
+class PostCard(PostOutput):
+    num_likes: int
+
 
 
